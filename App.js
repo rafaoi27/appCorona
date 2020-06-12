@@ -1,5 +1,7 @@
+import 'intl';
+import 'intl/locale-data/jsonp/pt-BR';
 import React from 'react';
-import routes from './src/routes';
+import Routes from './src/routes';
 import 'react-native-gesture-handler';
 
 export default function App() {
