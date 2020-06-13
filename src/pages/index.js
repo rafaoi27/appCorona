@@ -3,32 +3,37 @@ import { View, Image } from 'react-native';
 import styles from './style.js';
 import Logo from '../assets/logo.png';
 import MapView, {Marker, Callout} from 'react-native-maps';
-import { requestPermissionsAsync, getCurrentPositionAsync} from 'expo-location';
+import { requestPermissionsAsync, getCurrentPositionAsync } from 'expo-location';
 
 export default function Home(){
     const[currentRegion, setCurrentRegion] = useState(null);
     useEffect(()=>{
-            async function loadInitialPosition(){
-               const {granted} = await requestPermissionsAsync();
-               if(granted){
-                   const{coords} = await getCurrentPositionAsync({
-                   enableHighAccuracy: true,
-               });
-               const {latitude, longitude} = coords;
+        async function loadInitialPosition(){
+            const {granted} = await requestPermissionsAsync();
+            if(granted){
+                const{coords} = await getCurrentPositionAsync({
+                    enableHighAccuracy: true,
+                });
+                const {latitute, longitude} = coords;
 
-               setCurrentRegion({
-                   latitude,
-                   longitude,
-                   latitudeDelta: 10.0,
-                   longitudeDelta: 15.0,
-               })
+                setCurrentRegion({
+                    latitute,
+                    longitude,
+                    latitudeDelta: 10.0,
+                    longitudeDelta: 15.0,
+                })
             }
+
         }
         loadInitialPosition();
     }, []);
 
-    function handleRegionChance(region){
-        setCurrentRegion(region);
+    async function loadPersonPosition(){
+        const{latitute, longitude} = currentRegion;                
+    }
+
+    function handleRegionChange(Region){
+        setCurrentRegion(Region);
     }
 
     if(!currentRegion){
@@ -41,11 +46,11 @@ export default function Home(){
                 <Image source={Logo}></Image>
             </View>
             <MapView
-                onRegionHandleChance = {handleRegionChance}
+                onRegionChangeComplete = {handleRegionChange}
                 initialRegion = {currentRegion}
                 style = {styles.map}
-                >
+            >
             </MapView>
         </View>
     );
-    }
+}
